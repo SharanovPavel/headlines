@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Headlines</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	</head>
 	<body>
 		<h1>Headlines</h1>
@@ -13,6 +14,23 @@
 		</form>
 		<p>City: <b>{{weather.city}}, {{weather.country}}</b></p>
 		<p>{{weather.description}} |{{weather.temperature}}&#8451;</p>
+
+		<h2>Currency</h2>
+		<form>
+			from: <select id="curr_from" name="currency_from">
+					{% for currency in currencies %}
+						<option value="{{currency}}" {{'selected="selected"' if currency_from==currency}}>{{currency}}</option>
+					{%  endfor %}
+				  </select>
+			to:	  <select id="curr_to" name="currency_to">
+					{% for currency in currencies %}
+						<option value="{{currency}}" {{'selected="selected"' if currency_to==currency}}>{{currency}}</option>
+					{%  endfor %}
+				  </select>
+			<input type="submit" value="Convert!">
+			<button onclick="reverse()">Reverse!</button>
+		</form>
+		1 {{currency_from}} = {{rate}} {{currency_to}} 
 		<h2>Headlines</h2>
 		<form>
 			<input type="text" name="publication" placeholder="search" />
@@ -24,5 +42,15 @@
 			<p>{{article.summary}}</p>
 			<hr />
 		{% endfor %}
+		<script type="text/javascript">
+			var reverse = function(){
+				var from = $("#curr_from option:selected");
+				var to = $("#curr_to option:selected");
+				var from_val = from.val();
+				var to_val = to.val();
+				from.val(to_val);
+				to.val(from_val);
+			}
+		</script>
 	</body>
 </html>
