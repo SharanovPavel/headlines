@@ -16,11 +16,7 @@ RSS_FEEDS = {'bbc': 'https://feeds.bbci.co.uk/news/rss.xml',
 def get_news(publication="bbc"):
 	feed = feedparser.parse(RSS_FEEDS[publication])
 	if len(feed['entries']) > 0: 
-		first_article = feed['entries'][0] 
-		return render_template("home.html",
-								title=first_article.get("title"),
-								published=first_article.get("published"),
-								summary=first_article.get("summary"))
+		return render_template("home.html", articles = feed['entries'])
 	else:
 		return "There are no news today."
 
