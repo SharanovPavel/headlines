@@ -53,12 +53,13 @@ def home():
 		currency_to = currency_to,
 		currencies = sorted(currencies)))
 
-	add_many_vals_to_cookies({
+	add_many_vals_to_cookies(response, {
 		"publication": publication,
 		"city": city,
 		"currency_from": currency_from,
 		"currency_to": currency_to
 		})
+	return response
 
 #Get RSS data
 def get_news(query):
@@ -95,10 +96,7 @@ def get_rate(frm, to):
 
 #Get value from request(including cookies) or DEFAULTS
 def get_val_from_request_or_default(val_name):
-	val = get_val_from_request(val_name)
-	if not val:
-		val = DEFAULTS[val_name]
-	return val
+	return get_val_from_request(val_name) or DEFAULTS[val_name]
 
 #Get value from request(including cookies)
 def get_val_from_request(val_name):
@@ -109,13 +107,13 @@ def get_val_from_cookies(val_name):
 	return request.cookies.get(val_name)
 
 #Add values from dictionary to request's cookies
-def add_many_vals_to_cookies(dict, expires):
+def add_many_vals_to_cookies(response, dict, expires = None):
 	expires = expires or get_cookies_expires_date()
-	for item in dict.items:
-		add_val_to_cookies(item[0], item[1], expires)
+	for item in dict.items():
+		add_val_to_cookies(response, item[0], item[1], expires)
 
 #Add values to request's cookies
-def add_val_to_cookies(val_name, val, expires):
+def add_val_to_cookies(response, val_name, val, expires = None):
 	response.set_cookie(
 		val_name, 
 		val, 
